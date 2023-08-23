@@ -9,5 +9,7 @@ data class KitchenModel(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long,
+
+    @Column(nullable = false)
     var name: String
 )

@@ -3,8 +3,10 @@ package com.clayder.api.comabemdelivery.api.controller
 import com.clayder.api.comabemdelivery.domain.model.KitchenModel
 import com.clayder.api.comabemdelivery.domain.repository.KitchenRepository
 import org.springframework.beans.BeanUtils
+import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -54,5 +56,23 @@ class KitchenController(private val repository: KitchenRepository ) {
         kitchen.get().name = kitchenUpdate.name
 
         return ResponseEntity.ok(repository.save(kitchen.get()))
+    }
+
+    @DeleteMapping("/{id}")
+    fun delete(@PathVariable id: Long): ResponseEntity<KitchenModel> {
+
+        val kitchen: Optional<KitchenModel> = repository.findById(id)
+
+        if (kitchen.isEmpty) {
+            return ResponseEntity.notFound().build()
+        }
+
+        try {
+            repository.delete(kitchen.get())
+        } catch (e: DataIntegrityViolationException) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build()
+        }
+
+        return ResponseEntity.noContent().build()
     }
 }

@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.*
 class RestaurantController(private val service: RestaurantService) {
 
     @GetMapping
-    fun getAll(): List<RestaurantModel> {
-        return service.findAll()
+    fun getAll(@RequestParam allParams: Map<String, String>): List<RestaurantModel> {
+        return service.findAll(allParams)
     }
 
     @GetMapping("/{id}")

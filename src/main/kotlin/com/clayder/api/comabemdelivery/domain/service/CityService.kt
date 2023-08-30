@@ -32,7 +32,7 @@ class CityService(private val repository: CityRepository, private val stateServi
 
     fun update(updateModel: CityModel, id: Long): CityModel {
 
-        var state: StateModel
+        val state: StateModel
 
         try {
             state = stateService.getById(updateModel.state.id)

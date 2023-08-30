@@ -1,25 +1,17 @@
 package com.clayder.api.comabemdelivery.api.controller
 
+import com.clayder.api.comabemdelivery.domain.exception.EntityInUseException
+import com.clayder.api.comabemdelivery.domain.exception.EntityNotFoundException
 import com.clayder.api.comabemdelivery.domain.model.KitchenModel
 import com.clayder.api.comabemdelivery.domain.repository.KitchenRepository
-import org.springframework.beans.BeanUtils
-import org.springframework.dao.DataIntegrityViolationException
+import com.clayder.api.comabemdelivery.domain.service.KitchenService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.ResponseStatus
-import org.springframework.web.bind.annotation.RestController
-import java.util.*
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/kitchen")
-class KitchenController(private val repository: KitchenRepository ) {
+class KitchenController(private val repository: KitchenRepository, private val service: KitchenService) {
 
     @GetMapping
     fun list() :List<KitchenModel> {
@@ -28,48 +20,33 @@ class KitchenController(private val repository: KitchenRepository ) {
 
     @GetMapping("/{id}")
     fun getById(@PathVariable id: Long): ResponseEntity<KitchenModel> {
-
-        val kitchen: Optional<KitchenModel> = repository.findById(id)
-
-        if (kitchen.isEmpty) {
-            return ResponseEntity.notFound().build()
-        }
-
-        return ResponseEntity.ok(kitchen.get())
+        return ResponseEntity.ok(service.getById(id))
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun create(@RequestBody kitchenModel: KitchenModel): KitchenModel {
-        return repository.save(kitchenModel)
+        return service.create(kitchenModel)
     }
 
     @PutMapping("/{id}")
     fun update(@PathVariable id: Long, @RequestBody kitchenUpdate: KitchenModel): ResponseEntity<KitchenModel> {
 
-        val kitchen: Optional<KitchenModel> = repository.findById(id)
+        val kitchen: KitchenModel = service.getById(id)
 
-        if (kitchen.isEmpty) {
-            return ResponseEntity.notFound().build()
-        }
+        kitchen.name = kitchenUpdate.name
 
-        kitchen.get().name = kitchenUpdate.name
-
-        return ResponseEntity.ok(repository.save(kitchen.get()))
+        return ResponseEntity.ok(repository.save(kitchen))
     }
 
     @DeleteMapping("/{id}")
     fun delete(@PathVariable id: Long): ResponseEntity<KitchenModel> {
 
-        val kitchen: Optional<KitchenModel> = repository.findById(id)
-
-        if (kitchen.isEmpty) {
-            return ResponseEntity.notFound().build()
-        }
-
         try {
-            repository.delete(kitchen.get())
-        } catch (e: DataIntegrityViolationException) {
+            service.delete(id)
+        } catch (e: EntityNotFoundException) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build()
+        } catch (e: EntityInUseException) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build()
         }
 

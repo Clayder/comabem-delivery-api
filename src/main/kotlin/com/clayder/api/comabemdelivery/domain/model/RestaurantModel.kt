@@ -5,7 +5,7 @@ import java.math.BigDecimal
 
 @Entity
 @Table(name="restaurant")
-data class Restaurantmodel(
+data class RestaurantModel(
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

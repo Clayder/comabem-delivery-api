@@ -3,46 +3,46 @@ package com.clayder.api.comabemdelivery.api.controller
 import com.clayder.api.comabemdelivery.domain.exception.EntityCanNotUpdatedException
 import com.clayder.api.comabemdelivery.domain.exception.EntityInUseException
 import com.clayder.api.comabemdelivery.domain.exception.EntityNotFoundException
-import com.clayder.api.comabemdelivery.domain.model.StateModel
-import com.clayder.api.comabemdelivery.domain.service.StateService
+import com.clayder.api.comabemdelivery.domain.model.RestaurantModel
+import com.clayder.api.comabemdelivery.domain.service.RestaurantService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/state")
-class StateController(private val service: StateService) {
+@RequestMapping("/restaurant")
+class RestaurantController(private val service: RestaurantService) {
 
     @GetMapping
-    fun getAll(): List<StateModel> {
+    fun getAll(): List<RestaurantModel> {
         return service.findAll()
     }
 
     @GetMapping("/{id}")
-    fun findById(@PathVariable id: Long): ResponseEntity<StateModel> {
+    fun findById(@PathVariable id: Long): ResponseEntity<RestaurantModel> {
         return try {
-            val model = service.getById(id)
-            ResponseEntity.ok(model)
+            val restaurant = service.getById(id)
+            ResponseEntity.ok(restaurant)
         } catch (e: EntityNotFoundException) {
             ResponseEntity.notFound().build()
         }
     }
 
     @PostMapping
-    fun create(@RequestBody newModel: StateModel): ResponseEntity<StateModel> {
+    fun create(@RequestBody newRestaurantModel: RestaurantModel): ResponseEntity<RestaurantModel> {
         return try {
-            val modelCreated = service.create(newModel)
-            ResponseEntity.status(HttpStatus.CREATED).body(modelCreated)
+            val newRestaurant = service.create(newRestaurantModel)
+            ResponseEntity.status(HttpStatus.CREATED).body(newRestaurant)
         } catch (e: EntityNotFoundException) {
             ResponseEntity.badRequest().build()
         }
     }
 
     @PutMapping("/{id}")
-    fun update(@RequestBody updateModel: StateModel, @PathVariable id: Long): ResponseEntity<StateModel> {
+    fun update(@RequestBody updateRestaurant: RestaurantModel, @PathVariable id: Long): ResponseEntity<RestaurantModel> {
         return try {
-            val modelUpdated: StateModel = service.update(updateModel, id)
-            ResponseEntity.ok(modelUpdated)
+            val updatedRestaurant: RestaurantModel = service.update(updateRestaurant, id)
+            ResponseEntity.ok(updatedRestaurant)
         } catch (e: EntityNotFoundException) {
             ResponseEntity.notFound().build()
         } catch (e: EntityCanNotUpdatedException) {
@@ -51,7 +51,7 @@ class StateController(private val service: StateService) {
     }
 
     @DeleteMapping("/{id}")
-    fun delete(@PathVariable id: Long): ResponseEntity<StateModel> {
+    fun delete(@PathVariable id: Long): ResponseEntity<RestaurantModel> {
         return try {
             service.delete(id)
             ResponseEntity.noContent().build()

@@ -11,6 +11,7 @@ import jakarta.persistence.JoinColumn
 import jakarta.persistence.JoinTable
 import jakarta.persistence.ManyToMany
 import jakarta.persistence.ManyToOne
+import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
@@ -55,4 +56,8 @@ data class RestaurantModel(
     @UpdateTimestamp
     @Column(nullable = false)
     var updatedAt: LocalDateTime,
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "restaurant")
+    var product: List<ProductModel>
 )

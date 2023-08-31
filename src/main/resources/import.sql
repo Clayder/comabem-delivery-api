@@ -13,3 +13,5 @@ insert into permission (id, description, name) values (1, 'descrição', 'admin'
 insert into type_payment (id, description) values (1, 'debito'), (2, 'credito');
 
 insert into restaurant_type_payment (restaurant_id, type_payment_id) values (1, 1), (1, 2), (2, 1), (3, 2);
+
+insert into product (id, name, description, price, active, restaurant_id) values (1, 'Pizza', 'descrição', 90.9, true, 1);

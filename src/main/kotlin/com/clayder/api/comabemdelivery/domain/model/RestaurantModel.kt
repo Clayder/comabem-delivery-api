@@ -35,8 +35,8 @@ data class RestaurantModel(
     @ManyToOne
     var kitchen: KitchenModel,
 
-    @ManyToMany
     @JsonIgnore
+    @ManyToMany
     @JoinTable(name = "restaurant_type_payment",
         joinColumns = [JoinColumn(name = "restaurant_id")],
         inverseJoinColumns = [JoinColumn(name = "type_payment_id")]

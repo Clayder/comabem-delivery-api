@@ -3,7 +3,7 @@ package com.clayder.api.comabemdelivery.api.controller
 import com.clayder.api.comabemdelivery.domain.exception.EntityCanNotUpdatedException
 import com.clayder.api.comabemdelivery.domain.exception.EntityInUseException
 import com.clayder.api.comabemdelivery.domain.exception.EntityNotFoundException
-import com.clayder.api.comabemdelivery.domain.model.PermissionModel
+import com.clayder.api.comabemdelivery.domain.model.PermissionTypeModel
 import com.clayder.api.comabemdelivery.domain.service.PermissionService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -21,12 +21,12 @@ import org.springframework.web.bind.annotation.RestController
 class PermissionController(private val service: PermissionService) {
 
     @GetMapping
-    fun getAll(): List<PermissionModel> {
+    fun getAll(): List<PermissionTypeModel> {
         return service.findAll()
     }
 
     @GetMapping("/{id}")
-    fun findById(@PathVariable id: Long): ResponseEntity<PermissionModel> {
+    fun findById(@PathVariable id: Long): ResponseEntity<PermissionTypeModel> {
         return try {
             val model = service.getById(id)
             ResponseEntity.ok(model)
@@ -36,9 +36,9 @@ class PermissionController(private val service: PermissionService) {
     }
 
     @PostMapping
-    fun create(@RequestBody newModel: PermissionModel): ResponseEntity<PermissionModel> {
+    fun create(@RequestBody newModel: PermissionTypeModel): ResponseEntity<PermissionTypeModel> {
         return try {
-            val modelCreated: PermissionModel = service.create(newModel)
+            val modelCreated: PermissionTypeModel = service.create(newModel)
             ResponseEntity.status(HttpStatus.CREATED).body(modelCreated)
         } catch (e: EntityNotFoundException) {
             ResponseEntity.badRequest().build()
@@ -46,9 +46,9 @@ class PermissionController(private val service: PermissionService) {
     }
 
     @PutMapping("/{id}")
-    fun update(@RequestBody updateModel: PermissionModel, @PathVariable id: Long): ResponseEntity<PermissionModel> {
+    fun update(@RequestBody updateModel: PermissionTypeModel, @PathVariable id: Long): ResponseEntity<PermissionTypeModel> {
         return try {
-            val modelUpdated: PermissionModel = service.update(updateModel, id)
+            val modelUpdated: PermissionTypeModel = service.update(updateModel, id)
             ResponseEntity.ok(modelUpdated)
         } catch (e: EntityNotFoundException) {
             ResponseEntity.notFound().build()
@@ -58,7 +58,7 @@ class PermissionController(private val service: PermissionService) {
     }
 
     @DeleteMapping("/{id}")
-    fun delete(@PathVariable id: Long): ResponseEntity<PermissionModel> {
+    fun delete(@PathVariable id: Long): ResponseEntity<PermissionTypeModel> {
         return try {
             service.delete(id)
             ResponseEntity.noContent().build()

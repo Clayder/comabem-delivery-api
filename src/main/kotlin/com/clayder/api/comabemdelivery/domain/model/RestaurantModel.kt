@@ -2,6 +2,7 @@ package com.clayder.api.comabemdelivery.domain.model
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.Column
+import jakarta.persistence.Embedded
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
@@ -36,5 +37,9 @@ data class RestaurantModel(
         joinColumns = [JoinColumn(name = "restaurant_id")],
         inverseJoinColumns = [JoinColumn(name = "type_payment_id")]
     )
-    var typePayment: List<TypePaymentModel> = ArrayList()
+    var typePayment: List<TypePaymentModel> = ArrayList(),
+
+    @JsonIgnore
+    @Embedded
+    var addressModel: AddressModel
 )

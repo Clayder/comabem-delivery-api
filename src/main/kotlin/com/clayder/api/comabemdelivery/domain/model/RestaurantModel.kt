@@ -12,7 +12,10 @@ import jakarta.persistence.JoinTable
 import jakarta.persistence.ManyToMany
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
+import org.hibernate.annotations.CreationTimestamp
+import org.hibernate.annotations.UpdateTimestamp
 import java.math.BigDecimal
+import java.time.LocalDateTime
 
 @Entity
 @Table(name="restaurant")
@@ -41,5 +44,15 @@ data class RestaurantModel(
 
     @JsonIgnore
     @Embedded
-    var addressModel: AddressModel
+    var addressModel: AddressModel,
+
+    @JsonIgnore
+    @CreationTimestamp
+    @Column(nullable = false)
+    var createdAt: LocalDateTime,
+
+    @JsonIgnore
+    @UpdateTimestamp
+    @Column(nullable = false)
+    var updatedAt: LocalDateTime,
 )

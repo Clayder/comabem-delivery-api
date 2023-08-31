@@ -34,7 +34,7 @@ class PermissionService(private val repository: PermissionRepository) {
         return repository.save(updateModel)
     }
 
-    fun delete(id: Long): Unit {
+    fun delete(id: Long) {
 
         try {
             repository.deleteById(id)

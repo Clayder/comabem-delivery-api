@@ -11,7 +11,15 @@ import org.springframework.stereotype.Service
 class RestaurantService(private val repository: RestaurantRepository, private val kitchenService: KitchenService) {
 
     fun findAll(allParams: Map<String, String>): List<RestaurantModel> {
-        return repository.findAll2(allParams)
+        return repository.findAll(allParams)
+    }
+
+    fun findAll(): List<RestaurantModel> {
+        return repository.findAll()
+    }
+
+    fun findAll(name: String?): List<RestaurantModel> {
+        return repository.findWithFreeShipping(name)
     }
 
     fun getById(id: Long): RestaurantModel {

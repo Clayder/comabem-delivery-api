@@ -61,4 +61,9 @@ class RestaurantController(private val service: RestaurantService) {
             ResponseEntity.status(HttpStatus.BAD_REQUEST).build()
         }
     }
+
+    @GetMapping("/free-shipping")
+    fun freeShipping(@RequestParam name: String?): List<RestaurantModel> {
+        return service.findAll(name)
+    }
 }

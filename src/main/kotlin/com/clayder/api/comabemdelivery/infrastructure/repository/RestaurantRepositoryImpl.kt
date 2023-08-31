@@ -2,23 +2,29 @@ package com.clayder.api.comabemdelivery.infrastructure.repository
 
 import com.clayder.api.comabemdelivery.domain.model.RestaurantModel
 import com.clayder.api.comabemdelivery.domain.repository.IRestaurantQueryRepository
+import com.clayder.api.comabemdelivery.domain.repository.RestaurantRepository
+import com.clayder.api.comabemdelivery.infrastructure.specification.RestaurantSpecification.Companion.withFreeShipping
+import com.clayder.api.comabemdelivery.infrastructure.specification.RestaurantSpecification.Companion.withSimilarName
 import jakarta.persistence.EntityManager
 import jakarta.persistence.PersistenceContext
-import jakarta.persistence.TypedQuery
 import jakarta.persistence.criteria.CriteriaBuilder
 import jakarta.persistence.criteria.CriteriaQuery
 import jakarta.persistence.criteria.Predicate
 import jakarta.persistence.criteria.Root
+import org.springframework.context.annotation.Lazy
 import org.springframework.stereotype.Repository
 
 @Repository
 class RestaurantRepositoryImpl(
 
     @PersistenceContext
-    private val manager: EntityManager
+    private val manager: EntityManager,
+
+    @Lazy
+    private val repository: RestaurantRepository
 ): IRestaurantQueryRepository {
 
-    override fun findAll2(allParams: Map<String, String>): List<RestaurantModel> {
+    override fun findAll(allParams: Map<String, String>): List<RestaurantModel> {
 
         val builder: CriteriaBuilder = manager.criteriaBuilder
 
@@ -26,22 +32,16 @@ class RestaurantRepositoryImpl(
         val root: Root<RestaurantModel> = criteria.from(RestaurantModel::class.java)
 
         val predicates: ArrayList<Predicate> = ArrayList()
-
-        if (allParams.containsKey("name")) {
-            predicates.add(builder.like(root.get("name"), "%${allParams["name"]}%"))
-        }
-
-        if (allParams.containsKey("finalShippingFee")) {
-            predicates.add(builder.run { lessThanOrEqualTo(root.get("shippingFee"), allParams["finalShippingFee"] ?: "0") })
-        }
-
-        if (allParams.containsKey("initShippingFee")) {
-            predicates.add(builder.run { lessThanOrEqualTo(root.get("shippingFee"), allParams["initShippingFee"] ?: "0") })
-        }
+        allParams["name"]?.let{ predicates.add(builder.like(root.get("name"), "%$it%")) }
+        allParams["finalShippingFee"]?.let { predicates.add(builder.run { lessThanOrEqualTo(root.get("shippingFee"), it) }) }
+        allParams["finalShippingFee"]?.let {predicates.add(builder.run { lessThanOrEqualTo(root.get("shippingFee"), it) })}
 
         criteria.where(*predicates.toTypedArray())
-        val query: TypedQuery<RestaurantModel> = manager.createQuery(criteria)
 
-        return query.resultList
+        return  manager.createQuery(criteria).resultList
+    }
+
+    override fun findWithFreeShipping(name: String?): List<RestaurantModel> {
+        return repository.findAll(withFreeShipping().and(withSimilarName(name)))
     }
 }

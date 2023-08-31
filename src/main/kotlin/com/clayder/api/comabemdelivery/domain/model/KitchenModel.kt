@@ -1,5 +1,6 @@
 package com.clayder.api.comabemdelivery.domain.model
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
@@ -18,5 +19,10 @@ data class KitchenModel(
     var id: Long,
 
     @Column(nullable = true)
-    var name: String
+    var name: String,
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "kitchen")
+    var restaurants: List<RestaurantModel> = ArrayList()
+
 )

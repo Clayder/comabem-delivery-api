@@ -1,6 +1,7 @@
 package com.clayder.api.comabemdelivery.domain.model
 
 import jakarta.persistence.Entity
+import jakarta.persistence.FetchType
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
@@ -23,6 +24,6 @@ data class ProductModel(
 
     var active: Boolean,
 
-    @ManyToOne
+    @field:ManyToOne(fetch = FetchType.LAZY)
     var restaurant: RestaurantModel
 )

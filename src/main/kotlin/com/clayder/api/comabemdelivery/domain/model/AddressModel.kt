@@ -2,6 +2,7 @@ package com.clayder.api.comabemdelivery.domain.model
 
 import jakarta.persistence.Column
 import jakarta.persistence.Embeddable
+import jakarta.persistence.FetchType
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 
@@ -23,7 +24,7 @@ data class AddressModel(
     @Column(name = "address_neighborhood")
     var neighborhood: String,
 
-    @ManyToOne
+    @field:ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "address_city_id")
     var city: CityModel
 )

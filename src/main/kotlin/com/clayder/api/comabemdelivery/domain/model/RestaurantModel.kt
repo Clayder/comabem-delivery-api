@@ -1,6 +1,7 @@
 package com.clayder.api.comabemdelivery.domain.model
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import jakarta.persistence.Column
 import jakarta.persistence.Embedded
 import jakarta.persistence.Entity
@@ -34,6 +35,7 @@ data class RestaurantModel(
     var shippingFee: BigDecimal,
 
     @JsonIgnore
+    @JsonIgnoreProperties("hibernateLazyInitializer")
     @field:ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
     var kitchen: KitchenModel,

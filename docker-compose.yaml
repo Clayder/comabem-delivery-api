@@ -1,8 +1,8 @@
 version: '3.3'
 services:
   db:
-    image: mysql:5.7
-    container_name: coma-bem-db
+    image: mysql:8.0
+    container_name: coma-bem-db2
     # restart: always
     environment:
       MYSQL_DATABASE: 'coma-bem-db'
@@ -17,9 +17,9 @@ services:
       - '3306'
       # Where our data will be persisted
     volumes:
-      - coma-bem-db:/var/lib/mysql
+      - coma-bem-db2:/var/lib/mysql
 
 # Names our volume
 volumes:
-  coma-bem-db:
+  coma-bem-db2:
     external: true

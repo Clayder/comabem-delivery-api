@@ -104,16 +104,16 @@
 					</dependency>
 				</dependencies>
 			</plugin>
-			<plugin>
-				<groupId>org.flywaydb</groupId>
-				<artifactId>flyway-maven-plugin</artifactId>
-				<version>9.2.2</version>
-				<configuration>
-					<url>jdbc:mysql://127.0.0.1:3306/coma-bem-db</url>
-					<user>root</user>
-					<password>password</password>
-				</configuration>
-			</plugin>
+<!--			<plugin>-->
+<!--				<groupId>org.flywaydb</groupId>-->
+<!--				<artifactId>flyway-maven-plugin</artifactId>-->
+<!--				<version>9.2.2</version>-->
+<!--				<configuration>-->
+<!--					<url>jdbc:mysql://127.0.0.1:3306/coma-bem-db</url>-->
+<!--					<user>root</user>-->
+<!--					<password>password</password>-->
+<!--				</configuration>-->
+<!--			</plugin>-->
 		</plugins>
 	</build>
 

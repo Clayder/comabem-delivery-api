@@ -50,7 +50,7 @@ data class RestaurantModel(
 
     @JsonIgnore
     @Embedded
-    var addressModel: AddressModel,
+    var address: AddressModel,
 
     @JsonIgnore
     @CreationTimestamp

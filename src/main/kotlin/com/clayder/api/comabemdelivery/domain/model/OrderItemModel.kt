@@ -10,16 +10,26 @@ import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 
 @Entity
-@Table(name = "city")
-data class CityModel(
-
+@Table(name="order_item")
+data class OrderItemModel(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long,
 
     @Column(nullable = false)
-    var name: String,
+    var quantity: Int,
 
-    @field:ManyToOne(fetch = FetchType.LAZY)
-    var state: StateModel
+    @Column(nullable = false)
+    var unitPrice: Double,
+
+    @Column(nullable = false)
+    var totalPrice: Double,
+
+    var observation: String,
+
+    @field:ManyToOne(optional = false, fetch = FetchType.LAZY)
+    var order: OrderModel,
+
+    @field:ManyToOne(optional = false, fetch = FetchType.LAZY)
+    var product: ProductModel
 )
